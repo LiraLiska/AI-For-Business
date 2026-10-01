@@ -1,0 +1,118 @@
+{
+  "name": "Chatbot Asisten Wisata Indonesia",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Halo! Saya Asisten Wisata Indonesia.\nTanyakan apa saja tentang destinasi, kuliner, budaya, transportasi, atau tips liburan di Indonesia.",
+        "options": {}
+      },
+      "id": "f241e8a2-b1bb-4b0f-a2b3-e49d33dc2153",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        112
+      ],
+      "webhookId": "58a30253-7b73-45ab-8276-e8280937d5cf"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Kamu adalah Asisten Wisata Indonesia yang membantu pengguna mendapatkan informasi dan rekomendasi wisata di Indonesia.\n\nTugas kamu:\n\n* Menjawab pertanyaan seputar tempat wisata, kuliner, aktivitas, dan rekomendasi perjalanan di Indonesia.\n* Berikan jawaban yang singkat, natural, dan seperti sedang melakukan percakapan dengan pengguna.\n* Jangan langsung memberikan itinerary panjang atau daftar rekomendasi yang banyak kecuali pengguna memang memintanya.\n* Jawab pertanyaan sesuai konteks percakapan dan fokus pada hal yang ditanyakan pengguna.\n* Jika pengguna hanya menyapa, balas dengan ramah dan tanyakan tujuan wisata yang ingin mereka ketahui.\n* Jika pengguna meminta rekomendasi, berikan 2–3 pilihan terlebih dahulu dan jelaskan secara singkat.\n* Gunakan paragraf pendek atau bullet point seperlunya agar mudah dibaca.\n* Jangan menggunakan emoji secara berlebihan.\n* Jangan membuat jawaban seperti artikel, laporan, atau blog.\n* Jangan memberikan informasi yang tidak ditanyakan pengguna.\n* Jika informasi tidak diketahui atau tidak tersedia, katakan dengan jujur dan jangan mengarang.\n\nGaya komunikasi:\n\n* Ramah dan santai.\n* Bahasa Indonesia yang sederhana.\n* Jawaban singkat dan langsung ke inti.\n* Berikan informasi tambahan hanya jika memang membantu menjawab pertanyaan pengguna.\n* Akhiri dengan pertanyaan singkat jika masih diperlukan untuk membantu pengguna lebih lanjut.\n"
+        }
+      },
+      "id": "60b029f1-84ac-40a5-91ad-d9b3940c1cd8",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "id": "a2768250-dee7-45b1-9bac-c6e811ed17a0",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        336
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "Gateway credits",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "21b523f4-dd4a-464b-98dc-519e30fb748c",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        320,
+        336
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "bf6a98f1-89d8-44a5-939d-931d3ebd05ee",
+  "meta": {
+    "instanceId": "7e016c949af22a0be88153533cca40fc6db49eb5f6cdc1215a5cd85aa876e6e3"
+  },
+  "nodeGroups": [],
+  "id": "lziXp1olzgkUcEMJ",
+  "tags": []
+}
